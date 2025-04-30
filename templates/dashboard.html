@@ -1,0 +1,161 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard</title>
+  <style>
+    .btn {
+      margin-left: 0;
+    }
+    .hg {
+      background: #1eb2a6;
+    }
+    .gd {
+      border-bottom: 1px solid black;
+    }
+    .hg1 {
+      background: #f57b51;
+    }
+    .hg2 {
+      background: #fdd365;
+    }
+    .flights-d {
+      background: linear-gradient(to left, #ede59a, #d5c455, #fddb3a);
+      padding: 40px 0;
+    }
+    .hotels-d {
+      background: linear-gradient(to left, #fea5ad, #ea9abb, #be8abf);
+      padding: 40px 0;
+    }
+    .package-d {
+      background: linear-gradient(to left, #550a46, #f9f6f7, #9aceff);
+      padding: 40px 0;
+    }
+    nav {
+      background-color: #343a40;
+      padding: 10px;
+    }
+    nav a, nav form button {
+      color: white;
+      text-decoration: none;
+      margin-right: 20px;
+      font-weight: bold;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    nav a:hover, nav form button:hover {
+      text-decoration: underline;
+    }
+    nav form {
+      display: inline;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="{% url 'home' %}">Home</a>
+  <a href="{% url 'flights' %}">Flights</a>
+  <a href="{% url 'hotels' %}">Hotels</a>
+  <a href="{% url 'package' %}">Packages</a>
+  <form method="POST" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+  </form>
+</nav>
+
+<center>
+
+  <!-- Flights Section -->
+  <div class="flights-d">
+    <h2>Flights</h2><br>
+    <table class="shadow-lg rounded">
+      <tr>
+        <th class="p-3 hg">Flight Number</th>
+        <th class="p-3 hg">Date</th>
+        <th class="p-3 hg">Seats</th>
+        <th class="p-3 hg">Cancel</th>
+      </tr>
+      {% for i in flights %}
+      <tr>
+        <td class="p-3 gd bg-light">{{ i.flight }}</td>
+        <td class="p-3 gd bg-light">{{ i.date }}</td>
+        <td class="p-3 gd bg-light">{{ i.seat }}</td>
+        <td class="p-3 gd bg-light"><a class="btn btn-primary" href="/cancelflight/{{ i.flight }}/{{ i.date }}/{{ i.seat }}">Cancel</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+    <br>
+    <a href="{% url 'flights' %}" class="btn btn-primary">Book Flights</a>
+    <a href="{% url 'payment' %}?type=flight" class="btn btn-primary">PAYMENT</a>
+  </div>
+
+  <!-- Hotels Section -->
+  <div class="hotels-d">
+    <h2>Hotels</h2><br>
+    <table class="shadow-lg rounded">
+      <tr>
+        <th class="p-3 hg1">Hotel Name</th>
+        <th class="p-3 hg1">Date</th>
+        <th class="p-3 hg1">Rooms</th>
+        <th class="p-3 hg1">Cancel</th>
+      </tr>
+      {% for j in hotels %}
+      <tr>
+        <td class="p-3 gd bg-light">{{ j.hotel_name }}</td>
+        <td class="p-3 gd bg-light">{{ j.date }}</td>
+        <td class="p-3 gd bg-light">{{ j.room }}</td>
+        <td class="p-3 gd bg-light"><a class="btn btn-primary" href="/cancelhotel/{{ j.hotel_name }}/{{ j.date }}/{{ j.room }}">Cancel</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+    <br>
+    <a href="{% url 'hotels' %}" class="btn btn-primary">Book Hotel</a>
+    <a href="{% url 'payment' %}?type=hotel" class="btn btn-primary">PAYMENT</a>
+  </div>
+
+  <!-- Packages Section -->
+  <div class="package-d">
+    <h2>Packages</h2><br>
+    <table class="shadow-lg rounded">
+      <tr>
+        <th class="p-3 hg2">Flight Number</th>
+        <th class="p-3 hg2">Seats</th>
+        <th class="p-3 hg2">Hotel Name</th>
+        <th class="p-3 hg2">Rooms</th>
+        <th class="p-3 hg2">Date</th>
+        <th class="p-3 hg2">Cancel</th>
+      </tr>
+      {% for k in packages %}
+      <tr>
+        <td class="p-3 gd bg-light">{{ k.flight }}</td>
+        <td class="p-3 gd bg-light">{{ k.seat }}</td>
+        <td class="p-3 gd bg-light">{{ k.hotel_name }}</td>
+        <td class="p-3 gd bg-light">{{ k.room }}</td>
+        <td class="p-3 gd bg-light">{{ k.date }}</td>
+        <td class="p-3 gd bg-light"><a class="btn btn-primary" href="/cancelpackage/{{ k.flight }}/{{ k.seat }}/{{ k.hotel_name }}/{{ k.date }}/{{ k.room }}">Cancel</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+    <br>
+    <a href="{% url 'package' %}" class="btn btn-primary">Book Package</a>
+    <a href="{% url 'payment' %}?type=package" class="btn btn-primary">PAYMENT</a>
+  </div>
+
+</center>
+
+<script>
+  function simulatePayment(type) {
+    alert("Redirecting to dummy payment gateway for " + type + "...");
+  }
+</script>
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dummy Payment</title>
+  <style>
+    .payment-container {
+      max-width: 500px;
+      margin: 50px auto;
+      background: #f9f9f9;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    input[type="text"], input[type="number"] {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .btn {
+      padding: 10px 25px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #218838;
+    }
+    .back-btn {
+      background-color: #007bff;
+    }
+    .back-btn:hover {
+      background-color: #0069d9;
+    }
+  </style>
+</head>
+<body>
+
+<div class="payment-container">
+  <h2>Dummy Payment Page - {{ booking_type|title }}</h2>
+  <p>Enter your payment details below:</p>
+
+  <form action="{% url 'payment_success' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Cardholder Name" required><br>
+    <input type="text" name="card" placeholder="Card Number (dummy)" required><br>
+    <input type="number" name="amount" placeholder="Amount" required><br>
+    <button type="submit" class="btn">Pay Now</button>
+  </form>
+
+  <br>
+  <a href="{% url 'dashboard' %}" class="btn back-btn">Back to Dashboard</a>
+</div>
+
+</body>
+</html>
+{% endblock %}
